@@ -11,3 +11,4 @@ public class ProyectoJuegoApplication {
         game.setVisible(true);
     }
 }
+

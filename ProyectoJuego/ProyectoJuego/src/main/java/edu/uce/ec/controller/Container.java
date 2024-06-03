@@ -180,21 +180,38 @@ public class Container {
             for (Opponents opponent : opponents) {
                 if (opponent.checkCollision(bullet.getX(), bullet.getY())) {
                     bulletsToRemove.add(bullet);
-                    opponent.setHealth(opponent.getHealth() - 1);
+
+                    int damage = 0;
+                    if (level == 3) {
+                        // Daño variable según la salud del oponente
+                        double healthPercentage = (opponent.getHealth() / (double) opponent.getMaxHealth()) * 100;
+                        if (healthPercentage == 100) {
+                            damage = 15;
+                        } else if (healthPercentage >= 50 && healthPercentage < 100) {
+                            damage = 10;
+                        } else if (healthPercentage < 50) {
+                            damage = 5;
+                        }
+                        score += 15; // Agregar 15 puntos al puntaje por cada impacto de bala en el nivel 3
+                    } else {
+                        // Daño fijo para otros niveles
+                        damage = 1;
+                    }
+
+                    opponent.setHealth(opponent.getHealth() - damage);
+
                     if (opponent.getHealth() <= 0) {
                         opponentsToRemove.add(opponent);
                         enemiesKilled++;
-                        // Incrementar la puntuación según el nivel
-                        switch (level) {
-                            case 1:
-                                score += 5;
-                                break;
-                            case 2:
-                                score += 10;
-                                break;
-                            case 3:
-                                score += 15;
-                                break;
+                        if (level != 3) {
+                            switch (level) {
+                                case 1:
+                                    score += 5;
+                                    break;
+                                case 2:
+                                    score += 10;
+                                    break;
+                            }
                         }
                     }
                 }
@@ -204,18 +221,7 @@ public class Container {
         for (Bullets bullet : bulletsOp) {
             if (hero.checkCollision(bullet.getX(), bullet.getY())) {
                 bulletsToRemove.add(bullet);
-                int damage = 0;
-                switch (level) {
-                    case 1:
-                        damage = 5;
-                        break;
-                    case 2:
-                        damage = 5;
-                        break;
-                    case 3:
-                        damage = 5;
-                        break;
-                }
+                int damage = 5;
                 hero.reduceHealth(damage);
                 if (hero.getHealth() <= 0) {
                     endGame("Game Over! Your hero is dead.");

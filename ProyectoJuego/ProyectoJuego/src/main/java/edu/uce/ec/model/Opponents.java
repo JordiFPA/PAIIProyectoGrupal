@@ -75,20 +75,31 @@ public class Opponents implements Drawable, Movable, Shootable {
         graphics.fillPolygon(cord_x, cord_y, 5);
 
         if (isLarge) {
-            drawHealthBar(graphics);
+            drawHealthPercentage(graphics);
         }
     }
 
-    private void drawHealthBar(Graphics graphics) {
-        int healthBarWidth = 50;
-        int healthBarHeight = 5;
-        int currentHealthWidth = (int) ((health / (double) maxHealth) * healthBarWidth);
+    public void drawHealthPercentage(Graphics graphics) {
+        if (isLarge) {
+            int healthBarWidth = 50;
+            int healthBarHeight = 5;
+            int currentHealthWidth = (int) ((health / (double) maxHealth) * healthBarWidth);
 
-        graphics.setColor(Color.RED);
-        graphics.fillRect(cord_x[0] - 25, cord_y[0] - 10, healthBarWidth, healthBarHeight);
+            graphics.setColor(Color.RED);
+            graphics.fillRect(cord_x[0] - 25, cord_y[0] - 10, healthBarWidth, healthBarHeight);
 
-        graphics.setColor(Color.GREEN);
-        graphics.fillRect(cord_x[0] - 25, cord_y[0] - 10, currentHealthWidth, healthBarHeight);
+            graphics.setColor(Color.GREEN);
+            graphics.fillRect(cord_x[0] - 25, cord_y[0] - 10, currentHealthWidth, healthBarHeight);
+
+            // Dibujar el texto de porcentaje de salud
+            graphics.setColor(Color.WHITE);
+            graphics.setFont(new Font("Arial", Font.BOLD, 15));
+            graphics.drawString(health + "%", cord_x[0] - 25, cord_y[0] - 15);
+        }
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     @Override

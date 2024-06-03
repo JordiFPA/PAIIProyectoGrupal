@@ -17,6 +17,8 @@ public class GameFrame extends JFrame implements KeyListener {
     private JPanel contentPane;
     private Container container;
     private int level = 1;
+    private boolean paused = false;
+    private Timer timer;
 
     public GameFrame(String title) {
         super(title);
@@ -28,14 +30,16 @@ public class GameFrame extends JFrame implements KeyListener {
         contentPane.setBackground(Color.black);
         setContentPane(contentPane);
         addKeyListener(this);
-        Timer timer = new Timer(10, new ActionListener() {
+        timer = new Timer(10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                container.update();
-                if (container.isLevelComplete()) {
-                    nextLevel();
+                if (!paused) {
+                    container.update();
+                    if (container.isLevelComplete()) {
+                        nextLevel();
+                    }
+                    repaint();
                 }
-                repaint();
             }
         });
         timer.start();
@@ -61,6 +65,10 @@ public class GameFrame extends JFrame implements KeyListener {
 
         // Dibujar el puntaje
         drawScore(g);
+
+        if (paused) {
+            drawPauseMessage(g);
+        }
     }
 
     private void drawHealthBar(Graphics g) {
@@ -89,6 +97,12 @@ public class GameFrame extends JFrame implements KeyListener {
         g.drawString("Puntaje: " + container.getScore(), 600, 100);
     }
 
+    private void drawPauseMessage(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 40));
+        g.drawString("Juego Pausado", getWidth() / 2 - 150, getHeight() / 2);
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -109,10 +123,23 @@ public class GameFrame extends JFrame implements KeyListener {
                 container.drawShoot(getGraphics());
                 break;
             }
+            case KeyEvent.VK_P: {
+                togglePause();
+                break;
+            }
             default:
                 throw new IllegalArgumentException("Unexpected value:");
         }
         repaint();
+    }
+
+    private void togglePause() {
+        paused = !paused;
+        if (paused) {
+            timer.stop();
+        } else {
+            timer.start();
+        }
     }
 
     private void nextLevel() {
