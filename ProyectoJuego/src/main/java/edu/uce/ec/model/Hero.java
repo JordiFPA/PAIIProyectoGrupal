@@ -1,21 +1,33 @@
 package edu.uce.ec.model;
 
+import edu.uce.ec.interfaces.Shootable;
 import edu.uce.ec.interfaces.Drawable;
 import edu.uce.ec.interfaces.Movable;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.util.ArrayList;
 
-public class Hero implements Drawable, Movable {
+public class Hero implements Drawable, Movable, Shootable {
 
-    int[] cord_x = {400, 450, 350};
-    int[] cord_y = {500, 550, 550};
+    public int[] cord_x = {400, 450, 350};
+    public int[] cord_y = {500, 550, 550};
+    private int health = 100;
 
     @Override
     public void draw(Graphics graphics) {
         graphics.setColor(Color.WHITE);
         graphics.fillPolygon(cord_x, cord_y, 3);
+    }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void reduceHealth(int damage) {
+        health -= damage;
+        if (health < 0) {
+            health = 0;
+        }
     }
 
     @Override
@@ -54,4 +66,14 @@ public class Hero implements Drawable, Movable {
 
     }
 
+    @Override
+    public void shoot(ArrayList<Bullets> e) {
+
+    }
+
+    @Override
+    public boolean checkCollision(int x, int y) {
+        Polygon polygon = new Polygon(cord_x, cord_y, cord_x.length);
+        return polygon.contains(x, y);
+    }
 }
