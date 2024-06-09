@@ -1,6 +1,9 @@
 package edu.uce.ec;
 
+import edu.uce.ec.Api.Consumer;
 import edu.uce.ec.view.GameFrame;
+import edu.uce.ec.view.NewUserWindow;
+import edu.uce.ec.view.RankingListWindow;
 import edu.uce.ec.view.Window1;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,9 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProyectoJuegoApplication {
 
     public static void main(String[] args) {
-        GameFrame game = new GameFrame("Galaga");
-        game.setVisible(true);
+        //GameFrame game = new GameFrame("Galaga");
+        //game.setVisible(true);
 
+        NewUserWindow game = new NewUserWindow("Hola");
+        game.setVisible(true);
         //Window1 W = new Window1("Proyect Galaga");
        // W.setVisible(true);
     }

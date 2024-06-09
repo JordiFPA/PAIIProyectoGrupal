@@ -1,6 +1,7 @@
 package edu.uce.ec.view;
 
 import edu.uce.ec.controller.Container;
+import edu.uce.ec.model.User;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -11,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
+
 public class GameFrame extends JFrame implements KeyListener {
 
     private static final long serialVersionUID = 11;
@@ -20,12 +22,12 @@ public class GameFrame extends JFrame implements KeyListener {
     private boolean paused = false;
     private Timer timer;
 
-    public GameFrame(String title) {
+    public GameFrame(String title, User user) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
 
-        container = new Container(level);
+        container = new Container(level, user);
         contentPane = new JPanel();
         contentPane.setBackground(Color.black);
         setContentPane(contentPane);
@@ -49,7 +51,7 @@ public class GameFrame extends JFrame implements KeyListener {
     public void paint(Graphics g) {
         super.paint(g);
         container.draw(g);
-
+        repaint();
         // Dibujar la línea en el 2/3 de la pantalla
         int y = getHeight() * 2 / 3;
         g.setColor(Color.RED);
@@ -127,8 +129,6 @@ public class GameFrame extends JFrame implements KeyListener {
                 togglePause();
                 break;
             }
-            default:
-                throw new IllegalArgumentException("Unexpected value:");
         }
         repaint();
     }
@@ -145,9 +145,9 @@ public class GameFrame extends JFrame implements KeyListener {
     private void nextLevel() {
         if (level < 3) {
             level++;
-            container = new Container(level, container.hero, container.getScore());
+            container = new Container(level, container.getUser());
         } else {
-            JOptionPane.showMessageDialog(this, "Congratulations! You've completed the game!");
+            JOptionPane.showMessageDialog(this, "¡Felicidades! ¡Has completado el juego!");
             System.exit(0);
         }
     }

@@ -11,7 +11,15 @@ public class Hero implements Drawable, Movable, Shootable {
 
     public int[] cord_x = {400, 450, 350};
     public int[] cord_y = {500, 550, 550};
-    private int health = 100;
+    private User user;
+    private int health = 0;
+    public Hero(User user){
+        this.user= user;
+    }
+
+    public int getHealth(){
+        return  user.getHealth();
+    }
 
     @Override
     public void draw(Graphics graphics) {
@@ -19,9 +27,6 @@ public class Hero implements Drawable, Movable, Shootable {
         graphics.fillPolygon(cord_x, cord_y, 3);
     }
 
-    public int getHealth() {
-        return health;
-    }
 
     public void reduceHealth(int damage) {
         health -= damage;

@@ -1,11 +1,13 @@
 package edu.uce.ec.view;
 
+import edu.uce.ec.Api.Consumer;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class RankingListWindow extends JFrame {
     private static final long serialVersionUID = 1L;
-
+    Consumer c = new Consumer();
     public RankingListWindow(String title) {
         super(title);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -20,6 +22,7 @@ public class RankingListWindow extends JFrame {
         // Etiqueta de título (por ahora vacío)
         JLabel lblTitle = new JLabel("Ranking List", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Arial", Font.BOLD, 24));
+        lblTitle.setVisible(true);
         contentPane.add(lblTitle, BorderLayout.NORTH);
 
         // Panel que eventualmente contendrá los datos del ranking (por ahora vacío)
@@ -34,9 +37,15 @@ public class RankingListWindow extends JFrame {
             Window1 mainWindow = new Window1("Mi Ventana");
             mainWindow.setVisible(true);
         });
+        JButton list = new JButton("Ver lista");
+        btnBack.addActionListener(e -> {
+            dispose();
+        });
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(btnBack);
+        buttonPanel.add(list);
         contentPane.add(buttonPanel, BorderLayout.SOUTH);
     }
 }

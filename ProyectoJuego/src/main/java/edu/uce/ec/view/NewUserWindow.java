@@ -1,12 +1,16 @@
 package edu.uce.ec.view;
 
+import edu.uce.ec.Api.Consumer;
+import edu.uce.ec.controller.Container;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class NewUserWindow extends JFrame {
-
+    private Consumer c = new Consumer();
+    private Container container = new Container();
     private static final long serialVersionUID = 1L;
     private JTextField userField;
     private JTextField passwordField;
@@ -21,11 +25,25 @@ public class NewUserWindow extends JFrame {
         setLocationRelativeTo(null);
 
         // Crear los campos de texto
-        userField = new JTextField(20); // Hacer los JTextField más largos
+        userField = new JTextField(20);
         passwordField = new JTextField(20);
+
+
 
         // Crear los botones
         createButton = new JButton("Crear");
+        createButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = userField.getText();
+                String password =  passwordField.getText();
+                c.createUser(288,username, password,100,0);
+                GameFrame game = new GameFrame("Hola",container.getUser());
+                game.setVisible(true);
+            }
+        });
+
         returnButton = new JButton("Regresar");
 
         // Añadir acción al botón "Regresar"

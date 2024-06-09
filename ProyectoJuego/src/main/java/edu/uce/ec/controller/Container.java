@@ -1,8 +1,10 @@
 package edu.uce.ec.controller;
 
+import edu.uce.ec.Api.Consumer;
 import edu.uce.ec.model.Bullets;
 import edu.uce.ec.model.Hero;
 import edu.uce.ec.model.Opponents;
+import edu.uce.ec.model.User;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -30,20 +32,27 @@ public class Container {
     private Timer opponentShootTimer;
     private int enemiesKilled = 0;
     private boolean levelComplete = false;
+    private User user = new User();
+
+    public Container(){
+
+    }
 
     // Constructor para inicializar con un héroe existente y puntaje
-    public Container(int level, Hero hero, int score) {
+    public Container(int level, User user) {
         this.level = level;
-        this.hero = hero;
-        this.score = score;
+        this.user = user;
+        this.hero = new Hero(user);
+        this.score = user.getScore();
         setMaxOpponents();
         startSpawningOpponents();
         startOpponentShooting();
+        updateScore(user.getScore());
     }
 
     // Modificar el constructor existente para usar el nuevo constructor
     public Container(int level) {
-        this(level, new Hero(), 0);
+        this(level, new User());
     }
 
     private void setMaxOpponents() {
@@ -252,4 +261,16 @@ public class Container {
         moveUp(1);
         moveDown(1);
     }
+    public void updateScore(int score) {
+        this.score = score;
+        user.setScore(score);
+        Consumer consumer = new Consumer();
+        consumer.updateUserInApi(user);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+
 }

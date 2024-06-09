@@ -6,8 +6,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        GameFrame game = new GameFrame("Galaga");
-        game.setVisible(true);
+        //GameFrame game = new GameFrame("Galaga");
+        //game.setVisible(true);
 
 
     }
