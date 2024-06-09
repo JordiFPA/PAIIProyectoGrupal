@@ -21,32 +21,34 @@ public class UserController {
 
     @GetMapping("/getUserId/")
     public Optional<User> getUserById(@RequestParam(name="id") long id) {
+
         return userService.getOneUser(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("/createUser/")
     public User createUser(@RequestBody User user) {
         userService.save(user);
         return user;
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable long id, @RequestBody User userDetails) {
+    @PutMapping("/updateUser/")
+    public User updateUser(@RequestParam(name="id") long id, @RequestBody User userUpDate) {
         Optional<User> optionalUser = userService.getOneUser(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setName(userDetails.getName());
-            user.setPassword(userDetails.getPassword());
-            user.setScore(userDetails.getScore());
-            user.setHealth(userDetails.getHealth());
+            user.setName(userUpDate.getName());
+            user.setPassword(userUpDate.getPassword());
+            user.setScore(userUpDate.getScore());
+            user.setHealth(userUpDate.getHealth());
             return userService.updateUser(user);
         } else {
             return null;
         }
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable long id) {
+    @DeleteMapping("/deleteUser/")
+    public void deleteUser(@RequestParam(name="id") long id) {
+
         userService.deleteUser(id);
     }
 }

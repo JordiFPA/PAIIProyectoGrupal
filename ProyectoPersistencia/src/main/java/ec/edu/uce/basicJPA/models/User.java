@@ -52,9 +52,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
                 ", score=" + score +
-                ", health=" + health +
                 '}';
     }
 

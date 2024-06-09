@@ -20,11 +20,6 @@ UserService serviceU = new UserService();
 
 	@Override
 	public void run(String... args) throws Exception {
-		serviceU.save(new User(2,"Jordi","123",10,10));
-		serviceU.save(new User(3,"Michel","123",10,10));
-
-
-
 
 	}
 }
