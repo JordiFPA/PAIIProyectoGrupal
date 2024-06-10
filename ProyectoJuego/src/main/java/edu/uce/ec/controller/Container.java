@@ -5,6 +5,7 @@ import edu.uce.ec.model.Bullets;
 import edu.uce.ec.model.Hero;
 import edu.uce.ec.model.Opponents;
 import edu.uce.ec.model.User;
+import edu.uce.ec.view.RankingListWindow;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -171,6 +172,7 @@ public class Container {
 
     private void endGame(String message) {
         JOptionPane.showMessageDialog(null, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        new RankingListWindow("Ranking").setVisible(true);
         System.exit(0);
     }
 

@@ -7,12 +7,12 @@ import org.json.JSONObject;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
+import java.util.*;
 
 public class Consumer {
 
 
-    public void getUser(){
+    public void getUser() {
         try {
             URL url = new URL("http://localhost:8080/users/getUser");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -36,6 +36,41 @@ public class Consumer {
         }
     }
 
+    public List<User> getRanking() {
+        List<User> rankingList = new ArrayList<>();
+        try {
+            URL url = new URL("http://localhost:8080/users/getRanking");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            int responseCode = connection.getResponseCode();
+            if (responseCode != 200) {
+                throw new RuntimeException("Invalid response code: " + responseCode);
+            } else {
+                StringBuilder sb = new StringBuilder();
+                Scanner sc = new Scanner(url.openStream());
+                while (sc.hasNext()) {
+                    sb.append(sc.nextLine());
+                }
+                sc.close();
+                JSONArray json = new JSONArray(sb.toString());
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject jsonUser = json.getJSONObject(i);
+                    User user = new User(
+                            jsonUser.getLong("id"),
+                            jsonUser.getString("name"),
+                            jsonUser.getString("password"),
+                            jsonUser.getInt("health"),
+                            jsonUser.getInt("score")
+                    );
+                    rankingList.add(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rankingList;
+    }
 
 
     public long createUser(String name, String password, int health, int score) {
@@ -84,14 +119,12 @@ public class Consumer {
         }
     }
 
-
-
     public void updateUser(User user) {
 
         try {
             long id = user.getId();
             // Establecer la URL del endpoint de actualización
-            URL url = new URL("http://localhost:8080/users/updateUser/"+id );
+            URL url = new URL("http://localhost:8080/users/updateUser/" + id);
 
             // Abrir conexión HTTP
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -140,10 +173,6 @@ public class Consumer {
             e.printStackTrace();
         }
     }
-
-
-
-
 }
 
 
