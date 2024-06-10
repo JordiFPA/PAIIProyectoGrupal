@@ -173,6 +173,43 @@ public class Consumer {
             e.printStackTrace();
         }
     }
+
+
+    public User getUserByUsernameAndPassword(String username, String password) {
+        try {
+            URL url = new URL("http://localhost:8080/users/getUserByUsernameAndPassword?name=" + username + "&password=" + password);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            int responseCode = connection.getResponseCode();
+            if (responseCode != 200) {
+                throw new RuntimeException("Invalid response code: " + responseCode);
+            } else {
+                StringBuilder sb = new StringBuilder();
+                Scanner sc = new Scanner(url.openStream());
+                while (sc.hasNext()) {
+                    sb.append(sc.nextLine());
+                }
+                sc.close();
+                JSONObject json = new JSONObject(sb.toString());
+                long id = json.getLong("id");
+                String name = json.getString("name");
+                int score = json.getInt("score");
+                // Crear y retornar un nuevo objeto User con los datos obtenidos
+                return new User(id, name, password, 0, score);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // Retornar null en caso de error
+        }
+    }
+
+
+
+
+
+
+
 }
 
 

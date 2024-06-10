@@ -1,5 +1,9 @@
 package edu.uce.ec.view;
 
+import edu.uce.ec.Api.Consumer;
+import edu.uce.ec.controller.Container;
+import edu.uce.ec.model.User;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +17,8 @@ public class UserWindow extends JFrame {
 
     private JButton createButton;
     private JButton returnButton;
-
+    private Consumer consumer = new Consumer();
+    private edu.uce.ec.controller.Container container;
     public UserWindow(String title) {
         setTitle("Continuar con el mismo Usuario");
         setSize(500, 300);
@@ -26,6 +31,23 @@ public class UserWindow extends JFrame {
 
         // Crear los botones
         createButton = new JButton("Jugar");
+        createButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = userField.getText();
+                String password = passwordField.getText();
+                User user =  consumer.getUserByUsernameAndPassword(username,password);
+                container = new Container(user);
+                GameFrame game = new GameFrame("Hola", container.getUser());
+                game.setVisible(true);
+
+            }
+        });
+
+
+
+
         returnButton = new JButton("Regresar");
 
         // Añadir acción al botón "Regresar"
