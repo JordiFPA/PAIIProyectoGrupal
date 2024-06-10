@@ -13,10 +13,12 @@ public class Hero implements Drawable, Movable, Shootable {
     public int[] cord_y = {500, 550, 550};
     private User user;
     private int health = 0;
+    private int score;
 
     public Hero(User user){
         this.user= user;
         this.user.setHealth(user.getHealth());
+        this.user.setScore(user.getScore());
     }
 
     public void setHealth(int health) {

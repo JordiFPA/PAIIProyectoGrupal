@@ -15,11 +15,11 @@ import javax.swing.*;
 public class GameFrame extends JFrame implements KeyListener {
 
     private static final long serialVersionUID = 11;
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
     private Container container;
-    private int level = 1;
+    private final int level = 1;
     private boolean paused = false;
-    private Timer timer;
+    private final Timer timer;
 
     public GameFrame(String title, User user) {
         super(title);
@@ -60,7 +60,7 @@ public class GameFrame extends JFrame implements KeyListener {
             // Dibujar el texto del nivel
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 40));
-            g.drawString("Nivel " + level, 350, 75);
+            g.drawString("Nivel " + container.getLevel(), 350, 75);
 
             // Dibujar la barra de vida
             drawHealthBar(g);
@@ -145,8 +145,8 @@ public class GameFrame extends JFrame implements KeyListener {
     }
 
     private void nextLevel() {
-        if (level < 3) {
-            level++;
+        System.out.print(container.getScore());
+        if (container.getLevel() <=4) {
             container = new Container(level, container.getUser());
         } else {
             JOptionPane.showMessageDialog(this, "¡Felicidades! ¡Has completado el juego!");

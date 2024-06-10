@@ -36,12 +36,14 @@ public class Container {
     private User user = new User();
 
     public Container() {
-
     }
 
     public Container(User user) {
         this.user = user;
         this.hero = new Hero(user);
+        this.health = user.getHealth();
+        this.score = user.getScore();
+        checkLevelUp();  // Verificar nivel inicial
     }
 
     // Constructor para inicializar con un héroe existente y puntaje
@@ -55,6 +57,7 @@ public class Container {
         startSpawningOpponents();
         startOpponentShooting();
         updateScore(user.getScore());
+        checkLevelUp();  // Verificar nivel inicial
     }
 
     // Modificar el constructor existente para usar el nuevo constructor
@@ -139,7 +142,6 @@ public class Container {
             bullet.draw(graphics);
         }
     }
-
 
     public void moveLeft(int variable) {
         hero.moveLeft(variable);
@@ -270,41 +272,51 @@ public class Container {
         user.setScore(score);
         Consumer consumer = new Consumer();
         consumer.updateUser(user);
-        System.out.println(user.getId());
-        System.out.println(user.getHealth() + " " + user.getScore());
+        checkLevelUp();  // Verificar si se debe cambiar de nivel
+    }
+
+    private void checkLevelUp() {
+        int previousLevel = level;
+        if (score >= 0 && score <25) {
+            level = 1;
+        } else if (score >= 25 && score < 125) {
+            level = 2;
+        } else if (score >= 125&& score <335) {
+            level = 3;
+        } else {
+            JOptionPane.showMessageDialog(null, "¡Felicidades! ¡Has completado el juego!");
+            System.exit(0);
+        }
+        if (previousLevel != level) {
+            setMaxOpponents();
+            startSpawningOpponents();
+            startOpponentShooting();
+        }
     }
 
     public int getScore() {
         return score;
     }
 
-    public boolean isLevelComplete() {
-        return levelComplete;
-    }
+        public boolean isLevelComplete() {
+            return levelComplete;
+        }
 
-    public void update() {
-        checkCollisions();
-        moveUp(1);
-        moveDown(1);
-    }
+        public void update() {
+            checkCollisions();
+            moveUp(1);
+            moveDown(1);
+        }
 
-    public User getUser() {
-        return user;
-    }
+        public User getUser() {
+            return user;
+        }
 
-    public int getHealth() {
-        return hero.getHealth();
-    }
+        public int getHealth() {
+            return hero.getHealth();
+        }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public Hero getHero() {
-        return hero;
-    }
-
-    public void setHero(Hero hero) {
-        this.hero = hero;
+    public int getLevel() {
+        return level;
     }
 }

@@ -194,13 +194,13 @@ public class Consumer {
                 JSONObject json = new JSONObject(sb.toString());
                 long id = json.getLong("id");
                 String name = json.getString("name");
+                int health = json.getInt("health");  // Obtener la salud del usuario
                 int score = json.getInt("score");
-                // Crear y retornar un nuevo objeto User con los datos obtenidos
-                return new User(id, name, password, 0, score);
+                return new User(id, name, password, health, score);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null; // Retornar null en caso de error
+            return null;
         }
     }
 

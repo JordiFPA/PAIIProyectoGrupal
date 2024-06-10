@@ -37,10 +37,14 @@ public class UserWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = userField.getText();
                 String password = passwordField.getText();
-                User user =  consumer.getUserByUsernameAndPassword(username,password);
-                container = new Container(user);
-                GameFrame game = new GameFrame("Hola", container.getUser());
-                game.setVisible(true);
+                User user = consumer.getUserByUsernameAndPassword(username, password);
+                if (user != null) {
+                    Container container = new Container(user);
+                    GameFrame game = new GameFrame("Hola", container.getUser());
+                    game.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null,"ERROR");
+                }
 
             }
         });
