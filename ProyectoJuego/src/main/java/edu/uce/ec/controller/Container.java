@@ -1,5 +1,4 @@
 package edu.uce.ec.controller;
-
 import edu.uce.ec.Api.Consumer;
 import edu.uce.ec.model.Bullets;
 import edu.uce.ec.model.Hero;
@@ -16,9 +15,8 @@ import javax.swing.Timer;
 import javax.swing.JOptionPane;
 
 public class Container {
-
+    private Consumer consumer = new Consumer();
     final int SCREEN_WIDTH = 700;
-    final int SCREEN_HEIGHT = 200;
     final int SCREEN_HEIGHT_2 = 800;
     public Hero hero;
     List<Opponents> opponents = new ArrayList<>();
@@ -28,14 +26,19 @@ public class Container {
     private int level;
     private int maxOpponents;
     private int score;
+    private int health;
     private Timer spawnTimer;
     private Timer opponentShootTimer;
     private int enemiesKilled = 0;
     private boolean levelComplete = false;
     private User user = new User();
 
-    public Container(){
+    public Container() {
 
+    }
+    public Container(User user){
+        this.user = user;
+        this.hero = new Hero(user);
     }
 
     // Constructor para inicializar con un héroe existente y puntaje
@@ -44,6 +47,7 @@ public class Container {
         this.user = user;
         this.hero = new Hero(user);
         this.score = user.getScore();
+        this.health = user.getHealth();
         setMaxOpponents();
         startSpawningOpponents();
         startOpponentShooting();
@@ -133,9 +137,6 @@ public class Container {
         }
     }
 
-    public int getHeroHealth() {
-        return hero.getHealth();
-    }
 
     public void moveLeft(int variable) {
         hero.moveLeft(variable);
@@ -189,39 +190,13 @@ public class Container {
             for (Opponents opponent : opponents) {
                 if (opponent.checkCollision(bullet.getX(), bullet.getY())) {
                     bulletsToRemove.add(bullet);
-
-                    int damage = 0;
-                    if (level == 3) {
-                        // Daño variable según la salud del oponente
-                        double healthPercentage = (opponent.getHealth() / (double) opponent.getMaxHealth()) * 100;
-                        if (healthPercentage == 100) {
-                            damage = 15;
-                        } else if (healthPercentage >= 50 && healthPercentage < 100) {
-                            damage = 10;
-                        } else if (healthPercentage < 50) {
-                            damage = 5;
-                        }
-                        score += 15; // Agregar 15 puntos al puntaje por cada impacto de bala en el nivel 3
-                    } else {
-                        // Daño fijo para otros niveles
-                        damage = 1;
-                    }
-
+                    int damage = (level == 3) ? calculateDamage(opponent) : 1;
                     opponent.setHealth(opponent.getHealth() - damage);
 
                     if (opponent.getHealth() <= 0) {
                         opponentsToRemove.add(opponent);
                         enemiesKilled++;
-                        if (level != 3) {
-                            switch (level) {
-                                case 1:
-                                    score += 5;
-                                    break;
-                                case 2:
-                                    score += 10;
-                                    break;
-                            }
-                        }
+                        updateScoreBasedOnLevel();
                     }
                 }
             }
@@ -232,6 +207,9 @@ public class Container {
                 bulletsToRemove.add(bullet);
                 int damage = 5;
                 hero.reduceHealth(damage);
+                user.setHealth(hero.getHealth());
+                Consumer consumer = new Consumer();
+                consumer.updateUser(user);
                 if (hero.getHealth() <= 0) {
                     endGame("Game Over! Your hero is dead.");
                     return;
@@ -248,6 +226,41 @@ public class Container {
         }
     }
 
+    private int calculateDamage(Opponents opponent) {
+        double healthPercentage = (opponent.getHealth() / (double) opponent.getMaxHealth()) * 100;
+        if (healthPercentage == 100) {
+            return 15;
+        } else if (healthPercentage >= 50 && healthPercentage < 100) {
+            return 10;
+        } else {
+            return 5;
+        }
+    }
+
+    private void updateScoreBasedOnLevel() {
+        switch (level) {
+            case 1:
+                score += 5;
+                break;
+            case 2:
+                score += 10;
+                break;
+            case 3:
+                score += 15;
+                break;
+        }
+        updateScore(score);
+    }
+
+    public void updateScore(int score) {
+        this.score = score;
+        user.setScore(score);
+        Consumer consumer = new Consumer();
+        consumer.updateUser(user);
+        System.out.println(user.getId());
+        System.out.println(user.getHealth() + " "+ user.getScore());
+    }
+
     public int getScore() {
         return score;
     }
@@ -261,16 +274,24 @@ public class Container {
         moveUp(1);
         moveDown(1);
     }
-    public void updateScore(int score) {
-        this.score = score;
-        user.setScore(score);
-        Consumer consumer = new Consumer();
-        consumer.updateUserInApi(user);
-    }
 
     public User getUser() {
         return user;
     }
 
+    public int getHealth() {
+        return hero.getHealth();
+    }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public Hero getHero() {
+        return hero;
+    }
+
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
 }

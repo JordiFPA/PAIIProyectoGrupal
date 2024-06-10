@@ -36,7 +36,9 @@ public class Consumer {
         }
     }
 
-    public void createUser(long id, String name, String password, int health, int score) {
+
+
+    public long createUser(String name, String password, int health, int score) {
         try {
             URL url = new URL("http://localhost:8080/users/createUser/");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -46,7 +48,8 @@ public class Consumer {
             connection.setDoOutput(true);
 
             JSONObject user = new JSONObject();
-            user.put("id", id);
+            // No incluyas el ID aquí
+
             user.put("name", name);
             user.put("password", password);
             user.put("health", health);
@@ -61,58 +64,77 @@ public class Consumer {
             if (responseCode != 200) {
                 throw new RuntimeException("Invalid response code: " + responseCode);
             } else {
+                // Leer la respuesta del servidor
                 StringBuilder sb = new StringBuilder();
-                Scanner sc = new Scanner(connection.getInputStream());
-                while (sc.hasNext()) {
-                    sb.append(sc.nextLine());
+                try (Scanner sc = new Scanner(connection.getInputStream())) {
+                    while (sc.hasNext()) {
+                        sb.append(sc.nextLine());
+                    }
                 }
-                sc.close();
                 System.out.println("Response from server: " + sb.toString());
+
+                // Extraer el ID del usuario de la respuesta del servidor
+                JSONObject response = new JSONObject(sb.toString());
+                long userId = response.getLong("id");
+                return userId;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return -1; // Retorna un valor negativo si ocurre un error
         }
     }
 
-    public void updateUserInApi(User user) {
+
+
+    public void updateUser(User user) {
+
         try {
-            // Convertir el objeto User a JSON usando JSONObject
+            long id = user.getId();
+            // Establecer la URL del endpoint de actualización
+            URL url = new URL("http://localhost:8080/users/updateUser/"+id );
+
+            // Abrir conexión HTTP
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+            // Configurar la solicitud como PUT
+            connection.setRequestMethod("PUT");
+
+            // Establecer las cabeceras de la solicitud
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setRequestProperty("Accept", "application/json");
+
+            // Habilitar la escritura de datos en el cuerpo de la solicitud
+            connection.setDoOutput(true);
+
+            // Crear el objeto JSON con los datos actualizados del usuario
             JSONObject userJson = new JSONObject();
-            userJson.put("id", user.getId());
             userJson.put("name", user.getName());
             userJson.put("password", user.getPassword());
             userJson.put("health", user.getHealth());
             userJson.put("score", user.getScore());
 
-            // Crear la URL de la API para actualizar el usuario
-            URL url = new URL("http://localhost:8080/users/updateUser/?id=" + user.getId());
-
-            // Crear la conexión HTTP
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("PUT");
-            connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            connection.setRequestProperty("Accept", "application/json");
-            connection.setDoOutput(true);
-
-            // Enviar el JSON al cuerpo de la solicitud
+            // Escribir los datos JSON en el cuerpo de la solicitud
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = userJson.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
 
-            // Verificar el código de respuesta
+            // Obtener el código de respuesta HTTP
             int responseCode = connection.getResponseCode();
-            if (responseCode != 200) {
-                throw new RuntimeException("Invalid response code: " + responseCode);
-            } else {
-                // Si la actualización fue exitosa, puedes imprimir o manejar la respuesta de la API
+
+            // Verificar si la respuesta es exitosa (código 200)
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Leer la respuesta del servidor si es necesario
                 StringBuilder sb = new StringBuilder();
-                Scanner sc = new Scanner(connection.getInputStream());
-                while (sc.hasNext()) {
-                    sb.append(sc.nextLine());
+                try (Scanner sc = new Scanner(connection.getInputStream())) {
+                    while (sc.hasNext()) {
+                        sb.append(sc.nextLine());
+                    }
                 }
-                sc.close();
                 System.out.println("Response from server: " + sb.toString());
+            } else {
+                // Si la respuesta no es exitosa, lanzar una excepción
+                throw new RuntimeException("Invalid response code: " + responseCode);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,3 +145,8 @@ public class Consumer {
 
 
 }
+
+
+
+
+

@@ -14,10 +14,9 @@ public class ProyectoJuegoApplication {
         //GameFrame game = new GameFrame("Galaga");
         //game.setVisible(true);
 
-        NewUserWindow game = new NewUserWindow("Hola");
-        game.setVisible(true);
-        //Window1 W = new Window1("Proyect Galaga");
-       // W.setVisible(true);
+
+        Window1 W = new Window1("Proyect Galaga");
+        W.setVisible(true);
     }
 }
 

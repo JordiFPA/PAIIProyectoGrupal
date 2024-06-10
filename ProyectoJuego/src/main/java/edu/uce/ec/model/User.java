@@ -15,6 +15,14 @@ public class User {
         this.score = score;
     }
 
+    public User( String name, String password, int health, int score) {
+        this.name = name;
+        this.password = password;
+        this.health = health;
+        this.score = score;
+    }
+
+
     public User() {
         // Constructor vacío
     }

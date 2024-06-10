@@ -2,6 +2,7 @@ package edu.uce.ec.view;
 
 import edu.uce.ec.Api.Consumer;
 import edu.uce.ec.controller.Container;
+import edu.uce.ec.model.User;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,8 +10,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class NewUserWindow extends JFrame {
-    private Consumer c = new Consumer();
-    private Container container = new Container();
+    private Consumer consumer = new Consumer();
+    private Container container; // Declara el contenedor sin inicializarlo aquí
     private static final long serialVersionUID = 1L;
     private JTextField userField;
     private JTextField passwordField;
@@ -28,8 +29,6 @@ public class NewUserWindow extends JFrame {
         userField = new JTextField(20);
         passwordField = new JTextField(20);
 
-
-
         // Crear los botones
         createButton = new JButton("Crear");
         createButton.addActionListener(new ActionListener() {
@@ -37,9 +36,12 @@ public class NewUserWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = userField.getText();
-                String password =  passwordField.getText();
-                c.createUser(288,username, password,100,0);
-                GameFrame game = new GameFrame("Hola",container.getUser());
+                String password = passwordField.getText();
+                User newUser = new User(username, password, 100, 0);
+                long userId = consumer.createUser(username, password, 100, 0);
+                newUser.setId(userId);
+                container = new Container(newUser);
+                GameFrame game = new GameFrame("Hola", container.getUser());
                 game.setVisible(true);
             }
         });
@@ -99,7 +101,7 @@ public class NewUserWindow extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            UserWindow window = new UserWindow("Mi Ventana");
+            NewUserWindow window = new NewUserWindow("Crear Nuevo Usuario");
             window.setVisible(true);
         });
     }

@@ -75,7 +75,7 @@ public class GameFrame extends JFrame implements KeyListener {
 
     private void drawHealthBar(Graphics g) {
         int maxHealth = 100;  // Salud máxima
-        int currentHealth = container.getHeroHealth();
+        int currentHealth = container.getHealth();
         int healthBarWidth = 100;  // Ancho de la barra de salud
 
         // Dibujar el fondo de la barra de salud

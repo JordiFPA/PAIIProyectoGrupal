@@ -13,8 +13,14 @@ public class Hero implements Drawable, Movable, Shootable {
     public int[] cord_y = {500, 550, 550};
     private User user;
     private int health = 0;
+
     public Hero(User user){
         this.user= user;
+        this.user.setHealth(user.getHealth());
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public int getHealth(){
@@ -29,9 +35,9 @@ public class Hero implements Drawable, Movable, Shootable {
 
 
     public void reduceHealth(int damage) {
-        health -= damage;
-        if (health < 0) {
-            health = 0;
+        user.setHealth(user.getHealth() - damage);
+        if (user.getHealth() < 0) {
+            user.setHealth(0);
         }
     }
 
