@@ -59,4 +59,16 @@ public class UserController {
         List<User> rankingList = userService.getUsersByScoreDesc();
         return ResponseEntity.ok(rankingList);
     }
+
+    @GetMapping("/getUserByUsernameAndPassword")
+    public ResponseEntity<User> getUserByUsernameAndPassword(@RequestParam(name="name") String name,
+                                                             @RequestParam(name="password") String password) {
+        Optional<User> optionalUser = userService.getUserByUsernameAndPassword(name, password);
+        return optionalUser.map(user -> ResponseEntity.ok().body(user))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+
+
 }

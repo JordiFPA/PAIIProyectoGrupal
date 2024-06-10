@@ -38,4 +38,10 @@ public class UserService {
     public List<User> getUsersByScoreDesc() {
         return userRepository.findAllByOrderByScoreDesc();
     }
+
+    public Optional<User> getUserByUsernameAndPassword(String name, String password) {
+        return userRepository.findByNameAndPassword(name, password);
+    }
+
+
 }
