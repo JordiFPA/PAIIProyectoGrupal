@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 
 public class Window1 extends JFrame {
+    @Serial
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
 
@@ -24,11 +26,11 @@ public class Window1 extends JFrame {
         lbl1.setForeground(Color.white);
         lbl1.setHorizontalAlignment(SwingConstants.CENTER);
         lbl1.setText("GALAGA GAME");
-        lbl1.setFont(lbl1.getFont().deriveFont(Font.PLAIN, 20)); // Ajustar tamaño de fuente
+        lbl1.setFont(lbl1.getFont().deriveFont(Font.PLAIN, 20));
         contentPane.add(lbl1, BorderLayout.CENTER);
 
         JPanel buttonNew = new JPanel();
-        buttonNew.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 8)); // Botones uno al lado del otro, centrados
+        buttonNew.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 8));
         JButton btn1 = new JButton("NEW GAME");
         btn1.addActionListener(new ActionListener() {
 
@@ -43,7 +45,7 @@ public class Window1 extends JFrame {
         });
         buttonNew.add(btn1);
         JPanel buttonCont = new JPanel();
-        buttonCont.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 8)); // Botones uno al lado del otro, centrados
+        buttonCont.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 8));
         JButton btn2 = new JButton("CONTINUE GAME");
 
         btn2.addActionListener(new ActionListener() {
@@ -60,7 +62,7 @@ public class Window1 extends JFrame {
 
         buttonNew.add(btn1);
         JPanel buttonList = new JPanel();
-        buttonList.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 8)); // Botones uno al lado del otro, centrados
+        buttonList.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 8));
         JButton btn3 = new JButton("Ranking List");
 
         btn3.addActionListener(new ActionListener() {
@@ -81,7 +83,5 @@ public class Window1 extends JFrame {
 
         buttonList.add(btn3);
         contentPane.add(buttonList, BorderLayout.SOUTH);
-
-
     }
 }

@@ -5,11 +5,13 @@ import edu.uce.ec.model.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 import java.util.List;
 
 public class RankingListWindow extends JFrame {
+    @Serial
     private static final long serialVersionUID = 1L;
-    private Consumer consumer = new Consumer();
+    private final Consumer consumer = new Consumer();
 
     public RankingListWindow(String title) {
         super(title);
@@ -44,7 +46,7 @@ public class RankingListWindow extends JFrame {
         JButton list = new JButton("Ver lista");
         list.addActionListener(e -> {
             List<User> rankingList = consumer.getRanking();
-            rankingPanel.removeAll(); // Limpiar el panel antes de agregar los datos
+            rankingPanel.removeAll();
 
             for (User user : rankingList) {
                 JLabel userLabel = new JLabel(user.getName() + " - Score: " + user.getScore());

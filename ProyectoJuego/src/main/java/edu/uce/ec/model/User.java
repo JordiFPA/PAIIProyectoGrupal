@@ -15,7 +15,7 @@ public class User {
         this.score = score;
     }
 
-    public User( String name, String password, int health, int score) {
+    public User(String name, String password, int health, int score) {
         this.name = name;
         this.password = password;
         this.health = health;
@@ -24,10 +24,9 @@ public class User {
 
 
     public User() {
-        // Constructor vacío
+
     }
 
-    // Getters y Setters
     public long getId() {
         return id;
     }

@@ -17,12 +17,12 @@ import javax.swing.Timer;
 import javax.swing.JOptionPane;
 
 public class Container {
-    private Consumer consumer = new Consumer();
+    private final Consumer consumer = new Consumer();
     final int SCREEN_WIDTH = 700;
     final int SCREEN_HEIGHT_2 = 800;
     public Hero hero;
     List<Opponents> opponents = new ArrayList<>();
-    List<Bullets> bulletsl = new ArrayList<>();
+    List<Bullets> bulletsL = new ArrayList<>();
     List<Bullets> bulletsOp = new ArrayList<>();
     Random random = new Random();
     private int level;
@@ -43,10 +43,9 @@ public class Container {
         this.hero = new Hero(user);
         this.health = user.getHealth();
         this.score = user.getScore();
-        checkLevelUp();  // Verificar nivel inicial
+        checkLevelUp();
     }
 
-    // Constructor para inicializar con un héroe existente y puntaje
     public Container(int level, User user) {
         this.level = level;
         this.user = user;
@@ -57,10 +56,9 @@ public class Container {
         startSpawningOpponents();
         startOpponentShooting();
         updateScore(user.getScore());
-        checkLevelUp();  // Verificar nivel inicial
+        checkLevelUp();
     }
 
-    // Modificar el constructor existente para usar el nuevo constructor
     public Container(int level) {
         this(level, new User());
     }
@@ -77,7 +75,7 @@ public class Container {
                 maxOpponents = 1;
                 break;
             default:
-                maxOpponents = 5; // Valor predeterminado
+                maxOpponents = 5;
                 break;
         }
     }
@@ -91,13 +89,13 @@ public class Container {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (level < 3 && opponents.size() < maxOpponents) {
-                    Opponents opponent = new Opponents(random.nextInt(SCREEN_WIDTH), 0); // Spawnear en la parte superior
+                    Opponents opponent = new Opponents(random.nextInt(SCREEN_WIDTH), 0);
                     if (level == 2) {
-                        opponent.setHealth(3); // Establecer salud a 3 para el nivel 2
+                        opponent.setHealth(3);
                     }
                     opponents.add(opponent);
                 } else if (level == 3 && opponents.size() < maxOpponents) {
-                    Opponents opponent = new Opponents(random.nextInt(SCREEN_WIDTH), 0, true); // Spawnear en la parte superior
+                    Opponents opponent = new Opponents(random.nextInt(SCREEN_WIDTH), 0, true);
                     opponents.add(opponent);
                 }
             }
@@ -135,7 +133,7 @@ public class Container {
         for (Opponents opponent : opponents) {
             opponent.draw(graphics);
         }
-        for (Bullets bullet : bulletsl) {
+        for (Bullets bullet : bulletsL) {
             bullet.draw(graphics);
         }
         for (Bullets bullet : bulletsOp) {
@@ -154,7 +152,7 @@ public class Container {
     public void moveDown(int variable) {
         int adjustedVariable = variable;
         if (level == 3) {
-            adjustedVariable = 1; // Reducir la velocidad en el nivel 3
+            adjustedVariable = 1;
         }
         for (Opponents opponent : opponents) {
             opponent.moveDown(adjustedVariable);
@@ -179,26 +177,25 @@ public class Container {
     }
 
     public void moveUp(int v) {
-        for (Bullets bullets : bulletsl) {
+        for (Bullets bullets : bulletsL) {
             bullets.moveUp(v + 3);
         }
     }
 
     public void drawShoot(Graphics graphics) {
-        bulletsl.add(new Bullets(hero.cord_x[0], hero.cord_y[0] + 10));
+        bulletsL.add(new Bullets(hero.cord_x[0], hero.cord_y[0] + 10));
     }
 
     public void checkCollisions() {
         List<Bullets> bulletsToRemove = new ArrayList<>();
         List<Opponents> opponentsToRemove = new ArrayList<>();
 
-        for (Bullets bullet : bulletsl) {
+        for (Bullets bullet : bulletsL) {
             for (Opponents opponent : opponents) {
                 if (opponent.checkCollision(bullet.getX(), bullet.getY())) {
                     bulletsToRemove.add(bullet);
                     int damage = (level == 3) ? calculateDamage(opponent) : 1;
 
-                    // Incrementar puntaje en 15 por cada disparo en el nivel 3
                     if (level == 3) {
                         score += 15;
                         updateScore(score);
@@ -232,7 +229,7 @@ public class Container {
             }
         }
 
-        bulletsl.removeAll(bulletsToRemove);
+        bulletsL.removeAll(bulletsToRemove);
         bulletsOp.removeAll(bulletsToRemove);
         opponents.removeAll(opponentsToRemove);
 
@@ -272,16 +269,16 @@ public class Container {
         user.setScore(score);
         Consumer consumer = new Consumer();
         consumer.updateUser(user);
-        checkLevelUp();  // Verificar si se debe cambiar de nivel
+        checkLevelUp();
     }
 
     private void checkLevelUp() {
         int previousLevel = level;
-        if (score >= 0 && score <25) {
+        if (score >= 0 && score < 25) {
             level = 1;
         } else if (score >= 25 && score < 125) {
             level = 2;
-        } else if (score >= 125&& score <335) {
+        } else if (score >= 125 && score < 335) {
             level = 3;
         } else {
             JOptionPane.showMessageDialog(null, "¡Felicidades! ¡Has completado el juego!");
@@ -298,23 +295,23 @@ public class Container {
         return score;
     }
 
-        public boolean isLevelComplete() {
-            return levelComplete;
-        }
+    public boolean isLevelComplete() {
+        return levelComplete;
+    }
 
-        public void update() {
-            checkCollisions();
-            moveUp(1);
-            moveDown(1);
-        }
+    public void update() {
+        checkCollisions();
+        moveUp(1);
+        moveDown(1);
+    }
 
-        public User getUser() {
-            return user;
-        }
+    public User getUser() {
+        return user;
+    }
 
-        public int getHealth() {
-            return hero.getHealth();
-        }
+    public int getHealth() {
+        return hero.getHealth();
+    }
 
     public int getLevel() {
         return level;

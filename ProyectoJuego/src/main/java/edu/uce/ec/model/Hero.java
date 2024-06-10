@@ -11,12 +11,12 @@ public class Hero implements Drawable, Movable, Shootable {
 
     public int[] cord_x = {400, 450, 350};
     public int[] cord_y = {500, 550, 550};
-    private User user;
+    private final User user;
     private int health = 0;
     private int score;
 
-    public Hero(User user){
-        this.user= user;
+    public Hero(User user) {
+        this.user = user;
         this.user.setHealth(user.getHealth());
         this.user.setScore(user.getScore());
     }
@@ -25,8 +25,8 @@ public class Hero implements Drawable, Movable, Shootable {
         this.health = health;
     }
 
-    public int getHealth(){
-        return  user.getHealth();
+    public int getHealth() {
+        return user.getHealth();
     }
 
     @Override
@@ -45,19 +45,16 @@ public class Hero implements Drawable, Movable, Shootable {
 
     @Override
     public void moveUp(int variable) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void moveDown(int variable) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void moveLeft(int variable) {
-        // Restar
         for (int i = 0; i < cord_x.length; i++) {
             cord_x[i] = cord_x[i] - variable;
         }
@@ -66,7 +63,6 @@ public class Hero implements Drawable, Movable, Shootable {
 
     @Override
     public void moveRight(int variable) {
-        // Sumar
         for (int i = 0; i < cord_x.length; i++) {
             cord_x[i] = cord_x[i] + variable;
         }
@@ -75,7 +71,6 @@ public class Hero implements Drawable, Movable, Shootable {
 
     @Override
     public void draw(Graphics graphics, Drawable drawable) {
-        // TODO Auto-generated method stub
 
     }
 

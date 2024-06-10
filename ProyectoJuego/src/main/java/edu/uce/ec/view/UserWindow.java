@@ -7,18 +7,21 @@ import edu.uce.ec.model.User;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import javax.swing.*;
 
 public class UserWindow extends JFrame {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-    private JTextField userField;
-    private JTextField passwordField;
+    private final JTextField userField;
+    private final JTextField passwordField;
 
     private JButton createButton;
     private JButton returnButton;
-    private Consumer consumer = new Consumer();
+    private final Consumer consumer = new Consumer();
     private edu.uce.ec.controller.Container container;
+
     public UserWindow(String title) {
         setTitle("Continuar con el mismo Usuario");
         setSize(500, 300);
@@ -26,12 +29,12 @@ public class UserWindow extends JFrame {
         setLocationRelativeTo(null);
 
         // Crear los campos de texto
-        userField = new JTextField(20); // Hacer los JTextField más largos
+        userField = new JTextField(20);
         passwordField = new JTextField(20);
 
         // Crear los botones
         createButton = new JButton("Jugar");
-        createButton.addActionListener(new ActionListener(){
+        createButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,14 +46,11 @@ public class UserWindow extends JFrame {
                     GameFrame game = new GameFrame("Hola", container.getUser());
                     game.setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(null,"ERROR");
+                    JOptionPane.showMessageDialog(null, "ERROR");
                 }
 
             }
         });
-
-
-
 
         returnButton = new JButton("Regresar");
 
@@ -58,8 +58,8 @@ public class UserWindow extends JFrame {
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Cierra la ventana actual
-                Window1 mainWindow = new Window1("Ventana Principal"); // Crea y muestra la ventana principal
+                dispose();
+                Window1 mainWindow = new Window1("Ventana Principal");
                 mainWindow.setVisible(true);
             }
         });

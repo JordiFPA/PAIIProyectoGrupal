@@ -12,8 +12,8 @@ public class Opponents implements Drawable, Movable, Shootable {
     public int[] cord_x = new int[5];
     public int[] cord_y = new int[5];
     public boolean isLarge;
-    private int health; // Añadir contador de impactos
-    private int maxHealth; // Salud máxima para la barra de vida
+    private int health;
+    private int maxHealth;
 
     public Opponents() {
     }
@@ -28,8 +28,8 @@ public class Opponents implements Drawable, Movable, Shootable {
 
     public Opponents(int randomX, int randomY, boolean isLarge, double enlargeFactor) {
         this.isLarge = isLarge;
-        this.maxHealth = isLarge ? 100 : 1; // Salud máxima 100 si es grande (nivel 3), 1 en caso contrario
-        this.health = maxHealth; // Inicializar con la salud máxima
+        this.maxHealth = isLarge ? 100 : 1;
+        this.health = maxHealth;
         initializeCoordinates(randomX, randomY);
         if (isLarge) {
             enlarge(enlargeFactor);
@@ -60,8 +60,8 @@ public class Opponents implements Drawable, Movable, Shootable {
 
     private void enlarge(double factor) {
         for (int i = 0; i < cord_x.length; i++) {
-            cord_x[i] = (int) (cord_x[i] * factor - cord_x[0] * (factor - 1));  // Ajuste de posición según el factor
-            cord_y[i] = (int) (cord_y[i] * factor - cord_y[0] * (factor - 1));  // Ajuste de posición según el factor
+            cord_x[i] = (int) (cord_x[i] * factor - cord_x[0] * (factor - 1));
+            cord_y[i] = (int) (cord_y[i] * factor - cord_y[0] * (factor - 1));
         }
     }
 
@@ -91,7 +91,6 @@ public class Opponents implements Drawable, Movable, Shootable {
             graphics.setColor(Color.GREEN);
             graphics.fillRect(cord_x[0] - 25, cord_y[0] - 10, currentHealthWidth, healthBarHeight);
 
-            // Dibujar el texto de porcentaje de salud
             graphics.setColor(Color.WHITE);
             graphics.setFont(new Font("Arial", Font.BOLD, 15));
             graphics.drawString(health + "%", cord_x[0] - 25, cord_y[0] - 15);

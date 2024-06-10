@@ -7,14 +7,16 @@ import edu.uce.ec.model.User;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import javax.swing.*;
 
 public class NewUserWindow extends JFrame {
-    private Consumer consumer = new Consumer();
-    private Container container; // Declara el contenedor sin inicializarlo aquí
+    private final Consumer consumer = new Consumer();
+    private Container container;
+    @Serial
     private static final long serialVersionUID = 1L;
-    private JTextField userField;
-    private JTextField passwordField;
+    private final JTextField userField;
+    private final JTextField passwordField;
 
     private JButton createButton;
     private JButton returnButton;
@@ -52,8 +54,8 @@ public class NewUserWindow extends JFrame {
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Cierra la ventana actual
-                Window1 mainWindow = new Window1("Ventana Principal"); // Crea y muestra la ventana principal
+                dispose();
+                Window1 mainWindow = new Window1("Ventana Principal");
                 mainWindow.setVisible(true);
             }
         });

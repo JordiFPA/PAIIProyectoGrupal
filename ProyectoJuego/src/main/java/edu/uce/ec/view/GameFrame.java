@@ -10,10 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Serial;
 import javax.swing.*;
 
 public class GameFrame extends JFrame implements KeyListener {
 
+    @Serial
     private static final long serialVersionUID = 11;
     private final GamePanel gamePanel;
     private Container container;
@@ -28,7 +30,7 @@ public class GameFrame extends JFrame implements KeyListener {
 
         container = new Container(level, user);
         gamePanel = new GamePanel();
-        gamePanel.setBackground(Color.BLACK); // Configura el fondo a negro
+        gamePanel.setBackground(Color.BLACK);
         setContentPane(gamePanel);
         addKeyListener(this);
         timer = new Timer(10, new ActionListener() {
@@ -74,9 +76,9 @@ public class GameFrame extends JFrame implements KeyListener {
         }
 
         private void drawHealthBar(Graphics g) {
-            int maxHealth = 100;  // Salud máxima
+            int maxHealth = 100;
             int currentHealth = container.getHealth();
-            int healthBarWidth = 100;  // Ancho de la barra de salud
+            int healthBarWidth = 100;
 
             // Dibujar el fondo de la barra de salud
             g.setColor(Color.RED);
@@ -146,7 +148,7 @@ public class GameFrame extends JFrame implements KeyListener {
 
     private void nextLevel() {
         System.out.print(container.getScore());
-        if (container.getLevel() <=4) {
+        if (container.getLevel() <= 4) {
             container = new Container(level, container.getUser());
         } else {
             JOptionPane.showMessageDialog(this, "¡Felicidades! ¡Has completado el juego!");

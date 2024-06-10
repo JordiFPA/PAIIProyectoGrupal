@@ -31,22 +31,22 @@ public class Bullets implements Movable, Drawable {
 
     @Override
     public void moveDown(int variable) {
-        y += variable + 3; // Incrementa un poco más rápido hacia abajo para evitar colisiones inmediatas
+        y += variable + 3;
     }
 
     @Override
     public void moveLeft(int variable) {
-        // No es necesario implementar este método para los proyectiles
+
     }
 
     @Override
     public void moveRight(int variable) {
-        // No es necesario implementar este método para los proyectiles
+
     }
 
     @Override
     public void draw(Graphics graphics, Drawable drawable) {
-        // No es necesario implementar este método para los proyectiles
+
     }
 
     public int getX() {
@@ -58,7 +58,6 @@ public class Bullets implements Movable, Drawable {
     }
 
     public boolean checkCollision(int x, int y) {
-        // Verifica si un punto (x, y) está dentro del área del proyectil
         return this.x < x && x < this.x + width && this.y < y && y < this.y + height;
     }
 }
