@@ -12,25 +12,30 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
-    public void save(User user){
-        repository.save(user);
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public List<User> getAllUsers(){
-        return repository.findAll();
+    public Optional<User> getOneUser(Long id) {
+        return userRepository.findById(id);
     }
 
-    public Optional<User> getOneUser(long id){
-        return repository.findById(id);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
-    public void deleteUser(long id){
-        repository.deleteById(id);
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
-    public User updateUser(User user) {
-        return repository.save(user);
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    // Nuevo método para obtener usuarios ordenados por puntaje de mayor a menor
+    public List<User> getUsersByScoreDesc() {
+        return userRepository.findAllByOrderByScoreDesc();
     }
 }
