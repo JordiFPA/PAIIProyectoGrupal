@@ -12,11 +12,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
-
 public class GameFrame extends JFrame implements KeyListener {
 
     private static final long serialVersionUID = 11;
-    private JPanel contentPane;
+    private GamePanel gamePanel;
     private Container container;
     private int level = 1;
     private boolean paused = false;
@@ -28,9 +27,9 @@ public class GameFrame extends JFrame implements KeyListener {
         setSize(800, 600);
 
         container = new Container(level, user);
-        contentPane = new JPanel();
-        contentPane.setBackground(Color.black);
-        setContentPane(contentPane);
+        gamePanel = new GamePanel();
+        gamePanel.setBackground(Color.BLACK); // Configura el fondo a negro
+        setContentPane(gamePanel);
         addKeyListener(this);
         timer = new Timer(10, new ActionListener() {
             @Override
@@ -40,69 +39,71 @@ public class GameFrame extends JFrame implements KeyListener {
                     if (container.isLevelComplete()) {
                         nextLevel();
                     }
-                    repaint();
+                    gamePanel.repaint();
                 }
             }
         });
         timer.start();
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        container.draw(g);
-        repaint();
-        // Dibujar la línea en el 2/3 de la pantalla
-        int y = getHeight() * 2 / 3;
-        g.setColor(Color.RED);
-        g.drawLine(0, y, getWidth(), y);
+    private class GamePanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            container.draw(g);
 
-        // Dibujar el texto del nivel
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 40));
-        g.drawString("Nivel " + level, 350, 75);
+            // Dibujar la línea en el 2/3 de la pantalla
+            int y = getHeight() * 2 / 3;
+            g.setColor(Color.RED);
+            g.drawLine(0, y, getWidth(), y);
 
-        // Dibujar la barra de vida
-        drawHealthBar(g);
+            // Dibujar el texto del nivel
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 40));
+            g.drawString("Nivel " + level, 350, 75);
 
-        // Dibujar el puntaje
-        drawScore(g);
+            // Dibujar la barra de vida
+            drawHealthBar(g);
 
-        if (paused) {
-            drawPauseMessage(g);
+            // Dibujar el puntaje
+            drawScore(g);
+
+            if (paused) {
+                drawPauseMessage(g);
+            }
         }
-    }
 
-    private void drawHealthBar(Graphics g) {
-        int maxHealth = 100;  // Salud máxima
-        int currentHealth = container.getHealth();
-        int healthBarWidth = 100;  // Ancho de la barra de salud
+        private void drawHealthBar(Graphics g) {
+            int maxHealth = 100;  // Salud máxima
+            int currentHealth = container.getHealth();
+            int healthBarWidth = 100;  // Ancho de la barra de salud
 
-        // Dibujar el fondo de la barra de salud
-        g.setColor(Color.RED);
-        g.fillRect(40, 50, healthBarWidth, 25);
+            // Dibujar el fondo de la barra de salud
+            g.setColor(Color.RED);
+            g.fillRect(40, 50, healthBarWidth, 25);
 
-        // Dibujar la salud actual
-        g.setColor(Color.GREEN);
-        int currentHealthWidth = (int) ((currentHealth / (double) maxHealth) * healthBarWidth);
-        g.fillRect(40, 50, currentHealthWidth, 25);
+            // Dibujar la salud actual
+            g.setColor(Color.GREEN);
+            int currentHealthWidth = (int) ((currentHealth / (double) maxHealth) * healthBarWidth);
+            g.fillRect(40, 50, currentHealthWidth, 25);
 
-        // Dibujar el texto de porcentaje de salud
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 15));
-        g.drawString(currentHealth + "%", 70, 70);
-    }
+            // Dibujar el texto de porcentaje de salud
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 15));
+            g.drawString(currentHealth + "%", 70, 70);
+        }
 
-    private void drawScore(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 30));
-        g.drawString("Puntaje: " + container.getScore(), 600, 100);
-    }
+        private void drawScore(Graphics g) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            g.drawString("Puntaje: " + container.getScore(), 600, 100);
+        }
 
-    private void drawPauseMessage(Graphics g) {
-        g.setColor(Color.YELLOW);
-        g.setFont(new Font("Arial", Font.BOLD, 40));
-        g.drawString("Juego Pausado", getWidth() / 2 - 150, getHeight() / 2);
+        private void drawPauseMessage(Graphics g) {
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Arial", Font.BOLD, 40));
+            g.drawString("Juego Pausado", getWidth() / 2 - 150, getHeight() / 2);
+        }
     }
 
     @Override
@@ -122,7 +123,7 @@ public class GameFrame extends JFrame implements KeyListener {
                 break;
             }
             case KeyEvent.VK_SPACE: {
-                container.drawShoot(getGraphics());
+                container.drawShoot(gamePanel.getGraphics());
                 break;
             }
             case KeyEvent.VK_P: {
@@ -130,7 +131,7 @@ public class GameFrame extends JFrame implements KeyListener {
                 break;
             }
         }
-        repaint();
+        gamePanel.repaint();
     }
 
     private void togglePause() {
@@ -140,6 +141,7 @@ public class GameFrame extends JFrame implements KeyListener {
         } else {
             timer.start();
         }
+        gamePanel.repaint();
     }
 
     private void nextLevel() {

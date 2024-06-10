@@ -1,4 +1,5 @@
 package edu.uce.ec.controller;
+
 import edu.uce.ec.Api.Consumer;
 import edu.uce.ec.model.Bullets;
 import edu.uce.ec.model.Hero;
@@ -36,7 +37,8 @@ public class Container {
     public Container() {
 
     }
-    public Container(User user){
+
+    public Container(User user) {
         this.user = user;
         this.hero = new Hero(user);
     }
@@ -191,12 +193,21 @@ public class Container {
                 if (opponent.checkCollision(bullet.getX(), bullet.getY())) {
                     bulletsToRemove.add(bullet);
                     int damage = (level == 3) ? calculateDamage(opponent) : 1;
+
+                    // Incrementar puntaje en 15 por cada disparo en el nivel 3
+                    if (level == 3) {
+                        score += 15;
+                        updateScore(score);
+                    }
+
                     opponent.setHealth(opponent.getHealth() - damage);
 
                     if (opponent.getHealth() <= 0) {
                         opponentsToRemove.add(opponent);
                         enemiesKilled++;
-                        updateScoreBasedOnLevel();
+                        if (level != 3) {
+                            updateScoreBasedOnLevel();
+                        }
                     }
                 }
             }
@@ -258,7 +269,7 @@ public class Container {
         Consumer consumer = new Consumer();
         consumer.updateUser(user);
         System.out.println(user.getId());
-        System.out.println(user.getHealth() + " "+ user.getScore());
+        System.out.println(user.getHealth() + " " + user.getScore());
     }
 
     public int getScore() {
