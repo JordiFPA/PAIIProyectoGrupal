@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/getUserId/")
-    public Optional<User> getUserById(@RequestParam(name="id") long id) {
+    public Optional<User> getUserById(@RequestParam(name = "id") long id) {
         return userService.getOneUser(id);
     }
 
@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteUser/")
-    public void deleteUser(@RequestParam(name="id") long id) {
+    public void deleteUser(@RequestParam(name = "id") long id) {
         userService.deleteUser(id);
     }
 
@@ -61,14 +61,12 @@ public class UserController {
     }
 
     @GetMapping("/getUserByUsernameAndPassword")
-    public ResponseEntity<User> getUserByUsernameAndPassword(@RequestParam(name="name") String name,
-                                                             @RequestParam(name="password") String password) {
+    public ResponseEntity<User> getUserByUsernameAndPassword(@RequestParam(name = "name") String name,
+                                                             @RequestParam(name = "password") String password) {
         Optional<User> optionalUser = userService.getUserByUsernameAndPassword(name, password);
         return optionalUser.map(user -> ResponseEntity.ok().body(user))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
 
 
 }

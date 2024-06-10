@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     // Nuevo método para obtener usuarios ordenados por puntaje en orden descendente
+
     List<User> findAllByOrderByScoreDesc();
 
     Optional<User> findByNameAndPassword(String name, String password);
